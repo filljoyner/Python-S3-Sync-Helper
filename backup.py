@@ -6,60 +6,7 @@
 # Last Updated:			2014-04-09
 # Python Version:		2.7
 # Requirements:			Python 2.7 & Boto
-#
 # ------------------------------------------------------------------------------
-#
-# INSTALLATION
-#
-# -----------------
-#
-# Python
-# Download and install Python 2.7 - https://www.python.org/download/releases/2.7.6/
-#
-# pip:
-# Install pip to install boto. Makes package installation a breeze
-# http://www.pip-installer.org/en/latest/installing.html
-#
-# boto
-# pip install boto
-#
-# ------------------------------------------------------------------------------
-#
-# HOW TO USE
-# 
-# -----------------
-#
-# Rename config.example.py to config.py
-# The config file requires the following info
-# 
-# s3_access: api access key
-#
-# s3_secret: api secret
-#
-# s3_bucket: The bucket in s3 where your files will be uploaded
-#
-# s3_folder: Optional. The folder to upload the files to. If not set
-#			 this will become the local_dir folder
-#
-# local_dir: The local directory you would like to upload files from
-#
-# ------------------------------------------------------------------------------
-#
-# WARNINGS / NOTES
-# 
-# -----------------
-#
-# Use at your own risk. If a key exists and a file is uploaded that key
-# will be overwritten. Make sure the bucket "folder" you are uploading
-# to is the one you would like to overwrite.
-#
-# Files that are in S3 that have been deleted locally will not be
-# deleted. In this version S3 does not sync down first. This would be a
-# good feature though.
-#
-# Might be nice to add a GUI too. One thing at a time.
-#
-# ==============================================================================
 
 
 # import libs
@@ -98,14 +45,14 @@ FS = FileStack()
 s3 = S3(access, secret)
 
 print ''
-print '-----------------------------------------'
-print 'Python S3 Upload Thingie!'
-print '-----------------------------------------'
+print '-----------------------------------------------------'
+print 'Python S3 Sync Helper'
+print '-----------------------------------------------------'
 print ''
 print 'local folder: ' + workspace
 print '   s3 folder: ' + file_prefix
 print ''
-print '-----------------------------------------'
+print '-----------------------------------------------------'
 print ''
 print 'Getting local file list...'
 print ''
@@ -120,6 +67,8 @@ file_num = 0
 upload_num = 0
 present_num = 0
 updated_num = 0
+empty_num = 0
+file_count = 0
 
 
 
@@ -127,10 +76,11 @@ updated_num = 0
 # if files are returned
 if files:
 	file_num = len(files)
+	file_pad = len(str(file_num))
 
-	print '-----------------------------------------'
+	print '-----------------------------------------------------'
 	print 'Processing ' + str(file_num) + ' file(s)'
-	print '-----------------------------------------'
+	print '-----------------------------------------------------'
 	print ''
 
 	# connect to bucket
@@ -138,6 +88,8 @@ if files:
 		# cycle through files and do the do
 		for _file in files:
 			s3_file = file_prefix + '/' + _file[len(workspace)+1:].replace('\\', '/')
+			s3_file_show = '...' + s3_file[-55:]
+
 			local_filesize = FS.filesize(_file)
 			s3_filesize = s3.size(s3_file)
 
@@ -147,23 +99,27 @@ if files:
 				if s3_filesize == None:
 					s3.upload(_file, s3_file)
 					upload_num += 1
-					print 'Upload: ' + s3_file
+					file_count+= 1
+					print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Upload: ' + s3_file_show
 
 				# if local filesize is not the same as s3 filesize, upload file
 				elif local_filesize != s3_filesize:
 					s3.upload(_file, s3_file)
 					updated_num += 1
-					print 'Local != S3 - Upload: ' + s3_file
+					file_count+= 1
+					print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Local != S3 - Upload: ' + s3_file_show
 
 				# if local filesize and s3 filesize are the same, file must be same
 				elif local_filesize == s3_filesize:
-					print 'Present: ' + s3_file
 					present_num += 1
-
+					file_count+= 1
+					print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Present: ' + s3_file_show
 
 			# give local file size is 0 error
 			else:
-				print 'Local size 0: ' + s3_file
+				empty_num+= 1
+				file_count+= 1
+				print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Local size 0: ' + s3_file_show
 	# give bucket connection error
 	else:
 		print 'S3 Connection Error: Check credentials, permissions and bucket name'
@@ -171,33 +127,19 @@ if files:
 
 
 # figure out number display size for presentation... don't worry about this stuff
-_upload_num = str(upload_num)
-_present_num = str(present_num)
-_updated_num = str(updated_num)
-
-display_size = len(_upload_num)
-
-if len(_present_num) > display_size:
-	display_size = len(_present_num)
-
-if len(_updated_num) > display_size:
-	display_size = len(_updated_num)
-
-if len(_upload_num) < display_size:
-	_upload_num = _upload_num.rjust(display_size)
-if len(_present_num) < display_size:
-	_present_num = _present_num.rjust(display_size)
-if len(_updated_num) < display_size:
-	_updated_num = _updated_num.rjust(display_size)
+_found_num = str(file_num).rjust(file_pad)
+_upload_num = str(upload_num).rjust(file_pad)
+_present_num = str(present_num).rjust(file_pad)
+_updated_num = str(updated_num).rjust(file_pad)
+_total_num = str(upload_num + present_num + updated_num).rjust(file_pad)
 
 print ''
-print '-----------------------------------------'
-print ''
+print '-----------------------------------------------------'
+print 'Details - ' + _found_num +   '/' + _total_num + ' Processed'
+print '-----------------------------------------------------'
 print _upload_num +  ' file(s) Uploaded       (New)'
 print _present_num + ' file(s) Present in S3  (Exists)'
 print _updated_num + ' file(s) Updated in S3  (Overwritten)'
-print ''
-print '-----------------------------------------'
 print ''
 print ' Started: ' + str(start_time)
 print 'Finished: ' + str(strftime(time_format, gmtime()))
