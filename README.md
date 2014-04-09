@@ -29,7 +29,8 @@
 # 
 # -----------------
 #
-# Configuration requires the following info
+# Rename config.example.py to config.py
+# The config file requires the following info
 # 
 # s3_access: api access key
 #
@@ -55,5 +56,7 @@
 # Files that are in S3 that have been deleted locally will not be
 # deleted. In this version S3 does not sync down first. This would be a
 # good feature though.
+#
+# Might be nice to add a GUI too. One thing at a time.
 #
 # ==============================================================================
