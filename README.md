@@ -1,6 +1,6 @@
 #Python S3 Upload Thingie
 
-```
+```python
 # Written Hastily by:	Philip Joyner
 # Version:				0.1
 # Last Updated:			2014-04-09
@@ -32,7 +32,7 @@ pip install boto
 
 Rename config.example.py to config.py
 
-```
+```python
 Config = {
 	's3_access' : 'YOUR ACCESS HERE',
 	's3_secret' : 'YOUR SECRET HERE',
