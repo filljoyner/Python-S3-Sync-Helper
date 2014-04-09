@@ -1,21 +1,15 @@
 #Python S3 Upload Thingie
---
 
-Written Hastily by:	Philip Joyner
+```
+# Written Hastily by:	Philip Joyner
+# Version:				0.1
+# Last Updated:			2014-04-09
+# Python Version:		2.7
+# Requirements:			Python 2.7 & Boto
+```
 
-Version: 0.1
+###Installation
 
-Last Updated: 2014-04-09
-
-Python Version: 2.7
-
-Requirements: Python 2.7 & Boto
-
---
-
-##INSTALLATION
-
--
 
 Python - Download and install Python 2.7
 
@@ -30,11 +24,11 @@ boto
 
 pip install boto
 
---
 
-##HOW TO USE
 
---
+###How to Use
+
+
 
 Rename config.example.py to config.py
 
@@ -60,16 +54,12 @@ s3_folder: Optional. The folder to upload the files to. If not set this will bec
 
 local_dir: The local directory you would like to upload files from
 
-------------------------------------------------------------------------------
 
-##WARNINGS / NOTES
+###Warnings & Notes
 
------------------
 
 Use at your own risk. If a key exists and a file is uploaded that key will be overwritten. Make sure the bucket "folder" you are uploading to is the one you would like to overwrite.
 
 Files that are in S3 that have been deleted locally will not be deleted. In this version S3 does not sync down first. This would be a good feature though.
 
 Might be nice to add a GUI too. One thing at a time.
-
-==============================================================================
