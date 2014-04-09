@@ -1,5 +1,5 @@
 # ==============================================================================
-# S3 Upload Thingie
+# Python S3 Sync Helper
 # ------------------------------------------------------------------------------
 # Written Hastily by:	Philip Joyner
 # Version:				0.1
@@ -97,6 +97,19 @@ if basefolder != None:
 FS = FileStack()
 s3 = S3(access, secret)
 
+print ''
+print '-----------------------------------------'
+print 'Python S3 Upload Thingie!'
+print '-----------------------------------------'
+print ''
+print 'local folder: ' + workspace
+print '   s3 folder: ' + file_prefix
+print ''
+print '-----------------------------------------'
+print ''
+print 'Getting local file list...'
+print ''
+
 # get files in local dir (aka workspace)
 files = FS.folder_read(workspace)
 
@@ -108,9 +121,18 @@ upload_num = 0
 present_num = 0
 updated_num = 0
 
+
+
+
 # if files are returned
 if files:
 	file_num = len(files)
+
+	print '-----------------------------------------'
+	print 'Processing ' + str(file_num) + ' file(s)'
+	print '-----------------------------------------'
+	print ''
+
 	# connect to bucket
 	if s3.connect(bucket):
 		# cycle through files and do the do
@@ -141,7 +163,7 @@ if files:
 
 			# give local file size is 0 error
 			else:
-				print 'Local size 0'
+				print 'Local size 0: ' + s3_file
 	# give bucket connection error
 	else:
 		print 'S3 Connection Error: Check credentials, permissions and bucket name'
@@ -168,13 +190,14 @@ if len(_present_num) < display_size:
 if len(_updated_num) < display_size:
 	_updated_num = _updated_num.rjust(display_size)
 
-print _upload_num
-
 print ''
 print '-----------------------------------------'
-print ' Started: ' + str(start_time)
-print 'Finished: ' + str(strftime(time_format, gmtime()))
-print '-----------------------------------------'
+print ''
 print _upload_num +  ' file(s) Uploaded       (New)'
 print _present_num + ' file(s) Present in S3  (Exists)'
 print _updated_num + ' file(s) Updated in S3  (Overwritten)'
+print ''
+print '-----------------------------------------'
+print ''
+print ' Started: ' + str(start_time)
+print 'Finished: ' + str(strftime(time_format, gmtime()))

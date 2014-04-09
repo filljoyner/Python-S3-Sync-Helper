@@ -1,4 +1,4 @@
-#Python S3 Upload Thingie
+#Python S3 Sync Helper
 
 ```python
 # Written Hastily by:	Philip Joyner
