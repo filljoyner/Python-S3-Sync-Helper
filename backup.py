@@ -88,7 +88,7 @@ if files:
 		# cycle through files and do the do
 		for _file in files:
 			s3_file = file_prefix + '/' + _file[len(workspace)+1:].replace('\\', '/')
-			s3_file_show = '...' + s3_file[-55:]
+			s3_file_show = '...' + s3_file[-40:]
 
 			local_filesize = FS.filesize(_file)
 			s3_filesize = s3.size(s3_file)
@@ -113,7 +113,7 @@ if files:
 				elif local_filesize == s3_filesize:
 					present_num += 1
 					file_count+= 1
-					print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Present: ' + s3_file_show
+					print str(file_count).rjust(file_pad) + '/' + str(file_num) + ' | Present (' + str(local_filesize) + '==' + str(s3_filesize) + '): ' + s3_file_show
 
 			# give local file size is 0 error
 			else:
@@ -131,7 +131,8 @@ _found_num = str(file_num).rjust(file_pad)
 _upload_num = str(upload_num).rjust(file_pad)
 _present_num = str(present_num).rjust(file_pad)
 _updated_num = str(updated_num).rjust(file_pad)
-_total_num = str(upload_num + present_num + updated_num).rjust(file_pad)
+_empty_num = str(empty_num).rjust(file_pad)
+_total_num = str(upload_num + present_num + updated_num + empty_num).rjust(file_pad)
 
 print ''
 print '-----------------------------------------------------'
@@ -140,6 +141,7 @@ print '-----------------------------------------------------'
 print _upload_num +  ' file(s) Uploaded       (New)'
 print _present_num + ' file(s) Present in S3  (Exists)'
 print _updated_num + ' file(s) Updated in S3  (Overwritten)'
+print _empty_num +   ' file(s) Skipped        (0 byte)'
 print ''
 print ' Started: ' + str(start_time)
 print 'Finished: ' + str(strftime(time_format, gmtime()))
