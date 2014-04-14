@@ -2,8 +2,8 @@
 # Python S3 Sync Helper
 # ------------------------------------------------------------------------------
 # Written Hastily by:	Philip Joyner
-# Version:				0.1
-# Last Updated:			2014-04-09
+# Version:				0.2
+# Last Updated:			2014-04-14
 # Python Version:		2.7
 # Requirements:			Python 2.7 & Boto
 # ------------------------------------------------------------------------------
