@@ -38,7 +38,8 @@ Config = {
 	's3_secret' : 'YOUR SECRET HERE',
 	's3_bucket' : 'YOUR BUCKET HERE',
 	's3_folder' : None, 								# default is: None
-	'local_dir' : 'C:/full/path/of/directory/to/upload' # use '/' in place of '\'
+	'local_dir' : 'C:/full/path/of/directory/to/upload' # use '/' in place of '\',
+	'upload_threads'  : 15
 }
 ```
 
@@ -53,6 +54,8 @@ s3_bucket: The bucket in s3 where your files will be uploaded
 s3_folder: Optional. The folder to upload the files to. If not set this will become the local_dir folder
 
 local_dir: The local directory you would like to upload files from
+
+upload_threads: The number of threads to use for simultaneous uploads. Don't use too many or your computer will crash. :(
 
 
 ###Warnings & Notes
