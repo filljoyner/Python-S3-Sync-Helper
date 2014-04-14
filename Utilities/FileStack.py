@@ -60,7 +60,7 @@ class FileStack:
             new_file.close()
 
 
-    def folder_read(self, path=None):
+    def folder_read(self, path=None, chunks=False):
         if path == None or self.is_dir(path) == False:
             return False
 
@@ -70,9 +70,19 @@ class FileStack:
                 fileList.append(os.path.join(root,file))
         
         if fileList:
+            if chunks != False:
+                return self.__chunks(fileList, chunks)
             return fileList
 
         return False
+
+
+    def __chunks(self, l, n):
+        _list = []
+        for i in xrange(0, len(l), n):
+            _list.append(l[i:i+n])
+        return _list
+
 
 
     
