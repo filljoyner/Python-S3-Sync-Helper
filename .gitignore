@@ -2,3 +2,6 @@
 config.py
 *.sublime-*
 upload/*
+_HOLD/*
+Logs/log-*
+data

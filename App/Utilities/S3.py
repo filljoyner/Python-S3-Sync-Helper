@@ -37,12 +37,20 @@ class S3:
             return False
         
         # delete existing file of same name
-        self.Bucket.delete_key(fileout)
+        try:
+            self.Bucket.delete_key(fileout)
+        except:
+            return filein + ' | Could not delete key in bucket: ' + fileout
 
         # upload file
-        key = self.Bucket.new_key(fileout)
-        key.set_metadata('Content-Disposition', 'attachment')
-        key.set_contents_from_filename(filein)
+        try:
+            key = self.Bucket.new_key(fileout)
+            #key.set_metadata('Content-Disposition', 'attachment')
+            key.set_contents_from_filename(filein)
+        except:
+            return filein + ' | Could not upload file to bucket: ' + fileout
+
+        return None
 
 
     def size(self, key=None):

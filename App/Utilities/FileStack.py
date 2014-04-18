@@ -2,6 +2,7 @@
 import os
 import re
 import shutil
+import scandir
 
 
 class FileStack:
@@ -30,9 +31,9 @@ class FileStack:
     # touch file
     def touch(self, filepath):
         if os.path.isfile(filepath) == False:
-            file = open(filepath, 'w')
-            file.write('')
-            file.close()
+            _file = open(filepath, 'w+')
+            _file.write('')
+            _file.close()
             return True
         return False
     
@@ -65,9 +66,10 @@ class FileStack:
             return False
 
         fileList = []
-        for root, subFolders, files in os.walk(path):
-            for file in files:
-                fileList.append(os.path.join(root,file))
+        #for root, subFolders, files in os.walk(path):
+        for root, subFolders, files in scandir.walk(path):
+            for _file in files:
+                fileList.append(os.path.join(root,_file))
         
         if fileList:
             if chunks != False:
