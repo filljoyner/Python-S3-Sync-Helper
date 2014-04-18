@@ -5,7 +5,7 @@
 # Version:				0.1
 # Last Updated:			2014-04-09
 # Python Version:		2.7
-# Requirements:			Python 2.7 & Boto
+# Requirements:			Python 2.7, Scandir & Boto
 ```
 
 ###Installation
@@ -23,6 +23,12 @@ http://www.pip-installer.org/en/latest/installing.html
 boto
 
 pip install boto
+
+Scandir
+
+Unpack from App/Installs/scandir-master.zip and run the following from within the scandir directory: python setup.py install
+
+
 
 
 
